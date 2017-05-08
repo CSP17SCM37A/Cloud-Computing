@@ -1,0 +1,287 @@
+1.client.java
+import java.io.*; 
+ 
+import java.net.*;
+
+import java.io.BufferedReader;
+
+import java.io.BufferedWriter;
+
+import java.io.DataInputStream;
+
+import java.io.File;
+
+import java.io.FileInputStream;
+
+import java.io.FileWriter;
+
+import java.io.InputStreamReader;
+
+import java.util.Scanner;
+
+
+
+
+
+class Client {
+	
+	public static int countLines(String filename) throws IOException {
+	    LineNumberReader reader  = new LineNumberReader(new FileReader(filename));
+	int cnt = 0;
+	String lineRead = "";
+	while ((lineRead = reader.readLine()) != null) {}
+
+	cnt = reader.getLineNumber(); 
+	reader.close();
+	return cnt;
+	}
+	
+  
+  public static void main(String args[])
+    
+    {   
+           
+       
+  try 
+
+         {        
+           Scanner scan = new Scanner(System.in);
+            
+           System.out.println("Enter the Address of SQS:");
+  
+           String Address;
+           //Address= scan.nextLine();
+           System.out.println("Enter the port of SQS:");
+
+           int port;
+           //port= scan.nextInt();  
+           Socket s=new Socket("127.0.0.1",2222);
+ 
+              
+     	   System.out.println("connecting to the SQS ");
+ 
+    
+           BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream("tasks.txt")));     
+           DataInputStream  inp = new DataInputStream(s.getInputStream());
+   
+           DataOutputStream oup = new DataOutputStream(s.getOutputStream());
+
+          int len=countLines("tasks.txt");
+          String len1 = Integer.toString(len);
+     
+         System.out.println(len1);
+
+           oup.writeBytes(len1);
+           oup.writeByte('\n');
+   
+        String task;
+ 
+          String line;
+        long startTime=System.nanoTime();
+           int k=1;
+           while ((line = br.readLine()) != null) 
+  
+             {
+                    
+                  
+
+                task=line;
+               
+                oup.writeBytes(task);
+                             
+                oup.writeByte('\n');
+        
+                System.out.println("Task "+k+" sent to SQS ");
+   
+                 k++;                            
+                            
+             }
+
+                 
+          
+
+       
+     br.close();
+
+
+           String output;
+           for(int i=1;i<=len;len++){
+            output = inp.readLine();
+                                  
+            System.out.println(output);
+ 
+            System.out.println("\n");
+		if(i==len)
+		{break;
+		}
+ 
+             }              
+
+               
+           long endtime=System.nanoTime();   
+           long  totaltime= (startTime-endtime)/1000000;  
+             System.out.println("Total time to run 10k Tasks:  "+totaltime);
+             System.out.println("Throughput :  "+totaltime/10000);
+             
+         } 
+ 
+            
+         catch (Exception e)
+          
+         {
+         
+            System.err.println("Error: " + e.getMessage());
+  
+         }
+   
+}
+
+}
+
+
+2.Sqs.java
+
+
+import java.io.*; 
+ 
+import java.net.*;
+
+import java.io.BufferedReader;
+
+import java.io.BufferedWriter;
+
+import java.io.DataInputStream;
+
+import java.io.File;
+
+import java.io.FileInputStream;
+
+import java.io.FileWriter;
+
+import java.io.InputStreamReader;
+
+import java.util.Scanner;
+
+
+
+
+
+class ClientPerformance {
+	
+	public static int countLines(String filename) throws IOException {
+	    LineNumberReader reader  = new LineNumberReader(new FileReader(filename));
+	int cnt = 0;
+	String lineRead = "";
+	while ((lineRead = reader.readLine()) != null) {}
+
+	cnt = reader.getLineNumber(); 
+	reader.close();
+	return cnt;
+	}
+	
+  
+  public static void main(String args[])
+    
+    {   
+           
+       
+  try 
+
+         {        
+           Scanner scan = new Scanner(System.in);
+            
+          // System.out.println("Enter the Address of SQS:");
+  
+           String Address;
+           //Address= scan.nextLine();
+           System.out.println("Client SqsJobs Tasks.txt");
+
+           int port;
+           //port= scan.nextInt();  
+           Socket s=new Socket("127.0.0.1",3333);
+ 
+              
+     	   System.out.println("connecting to the SQS ");
+ 
+    
+           BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream("tasks.txt")));     
+           DataInputStream  inp = new DataInputStream(s.getInputStream());
+   
+           DataOutputStream oup = new DataOutputStream(s.getOutputStream());
+
+          int len=countLines("tasks.txt");
+int len2=160;
+          String len1 = Integer.toString(len2);;
+     
+         System.out.println(len1);
+
+           oup.writeBytes(len1);
+           oup.writeByte('\n');
+   
+        String task;
+ 
+          String line;
+        long startTime=System.nanoTime();
+           int k=1;
+           while ((line = br.readLine()) != null) 
+  
+             {
+                    
+              for(int i=1;i<=160;i++){
+
+                task=line;
+               
+                oup.writeBytes(task);
+                             
+                oup.writeByte('\n');
+        
+                System.out.println("Task "+i+" sent to SQS ");
+   
+                 k++;                            
+                 }           
+             }
+
+                 
+          
+
+       
+     br.close();
+
+
+           String output;
+           for(int i=1;i<=160;i++){
+            output = inp.readLine();
+                                  
+            System.out.println(output);
+ 
+            System.out.println("\n");
+		if(i==160)
+		{break;
+		}
+ 
+             }              
+
+               
+           long endtime=System.nanoTime();   
+           long  totaltime1= (endtime-startTime)/1000000;  
+           // long totaltime=totaltime1-16000*5;    
+             System.out.println("Total time to run 1600 Tasks:  "+totaltime1);
+            double x=10000*100/totaltime1;
+             System.out.println("Efficiency :  "+x+"%");
+             
+         } 
+ 
+            
+         catch (Exception e)
+          
+         {
+         
+            System.err.println("Error: " + e.getMessage());
+  
+         }
+   
+}
+
+}
+
+

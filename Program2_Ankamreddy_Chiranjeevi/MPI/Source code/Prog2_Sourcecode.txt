@@ -1,0 +1,80 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <mpi.h>
+
+#define BUFSIZE 1000000
+#define BUFLEN 255
+#define BUF 10
+
+struct keyval{
+int key[10];
+char val[BUFLEN];
+};
+
+typedef struct keyval keyval_s;
+
+typedef int (*compareptr)(const void*, const void*);
+
+int compare (keyval_s * a, keyval_s * b)
+{
+  return ( a->key - b->key );
+}
+
+int main (int argc, char *argv[])
+{    
+  int values[BUFSIZE];
+  keyval_s kv[BUFSIZE], *recv;
+  int n, i=0, temp;
+  FILE *in, *out;
+ double start,last,totaltime;
+  int rank, size;
+  MPI_Init(&argc, &argv);
+  MPI_Comm_rank(MPI_COMM_WORLD, &rank);
+  MPI_Comm_size(MPI_COMM_WORLD, &size);
+  char filename[20];
+  char data[20];
+
+   Start=systemtime();
+  if(rank ==0){
+recv = (keyval_s *) malloc (size*BUFSIZE*sizeof(keyval_s));
+   }
+
+  sprintf(filename, "%d", rank);
+  in=fopen(filename,"r");
+  while(fscanf(in,"%d %s",&kv[i].key, kv[i].val) != EOF){
+printf("Read key %d, data %s from file\n", kv[i].key, kv[i].val);   
+i++;
+  }
+
+ int chuncks[10];
+int i,j=0;
+  for(i=0;i<10;i++)
+{
+   Chunck[i]=1000000;
+    j=1000000;
+ if(chunck[i]<j)
+{
+     MPI_Gather(kv, sizeof(keyval_s)*BUFSIZE, MPI_BYTE,recv, sizeof(keyval_s)*BUFSIZE, MPI_BYTE, 0, MPI_COMM_WORLD);
+ // MPI_Gather(kv,BUFSIZE,MPI_BYTE,recv,BUFSIZE,MPI_BYTE,0,MPI_COMM_WORLD);  if(rank==0)
+{
+ qsort ((void*)&kv, BUFSIZE, sizeof(keyval_s),(compareptr) compare);
+ out=fopen("Output.txt","w");
+ for (n=0; n<BUFSIZE*size; n++)
+{
+
+   fprintf (out,"%d %s\n",recv[n].key, recv[n].val);
+}
+ j+=1000000;
+}
+}
+last=systemtime();
+totaltime=last-first;
+
+printf("Total time: %d",total);
+
+free(recv);
+fclose(out);
+   }
+fclose(in);
+return 0;   
+}

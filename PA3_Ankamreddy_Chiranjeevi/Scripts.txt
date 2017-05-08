@@ -1,0 +1,17 @@
+This Assignment,i havent run the benchmark using Scripts.I run all the benchmarks Manually.
+1.Local System: The Local System Framework code has been written in java. It consists of two parts.one is client side and another is Local BackEnd Workers(Sqs.java).
+Execution:
+The program is run on Local System.
+To execute the program in Linux systems.
+First Open terminal and compile the both the programs i.e run the command javac Client.java and java Sqs.java.
+To execute the Main programs as follow:
+ Client.java:Client .java program can be executed and users would have the choice to enter the Queue name and the local file which contains all the tasks to be executed.
+Sqs.Java : Sqs.java program can be executed and users would have the choice to enter the Number of threads for every Benchmark.The number of threads varies 1,2,4,8,16.
+2.Remote System:The Remote System Framework code has been written in java. It consists of two parts.one is client side and another is Local BackEnd Workers(Workerrun.java).
+Execution:
+The program is run on Remote System i.e Amazon Aws.It uses Amazon Resources like Ec2 instances,SQS,S3,DynamoDb.
+To execute the program in Linux systems.
+First Open terminal and connect to Ec2 instance,then compile the both the programs i.e run the command javac Client.java and  Workerrun.java.
+To execute the Main programs as follow:
+ Client.java:Client .java program can be executed and users would have the choice to enter the Queue name and the local file which contains all the tasks to be executed.
+Workerrun.Java : Workerrun.java program can be executed and users would have the choice to enter the Number of threads for every Benchmark.The number of threads varies 1,2,4,8,16.

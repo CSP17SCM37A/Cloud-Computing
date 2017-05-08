@@ -1,0 +1,190 @@
+package chiru;
+import java.io.*;
+import java.nio.file.Files;
+import java.util.*;
+import java.util.Map.Entry;
+
+public class Sharedmemory implements Runnable 
+   {
+
+	
+
+	private static Entry<String, String> outelement;
+
+	Sharedmemory(HashMap<String, String> inhashlist) 
+         {
+		HashMap<String, String> hashlist = new HashMap<String, String>();
+		Set<Entry<String, String>> set = inhashlist.entrySet();
+		Iterator<Entry<String, String>> iterator = set.iterator();
+		while (iterator.hasNext())
+		{
+		@SuppressWarnings("rawtypes")
+		Map.Entry me = (Map.Entry) iterator.next();
+		hashlist.put((String) me.getKey(), (String) me.getValue());
+		}
+
+	}
+	
+
+	public void run()
+
+	{
+		
+		HashMap<String, String> hashlist = null;
+		Map<String, String> map = new map<String, String>();
+		 ArrayList<File> filesCreated = new ArrayList<File>(); 
+		
+		String temp= "a";
+		String input = null;
+		String newinput=input+temp;
+		
+		File tempFile = new File(input);
+	
+			
+		tempFile.deleteOnExit();
+		
+		BufferedWriter bufferwriter = new BufferedWriter(new FileWriter(tempFile));
+		Set<Entry<String, String>> set = map.entrySet();
+		Iterator<Entry<String, String>> iterator = set.iterator();
+		
+		while (iterator.hasNext())
+		{
+		@SuppressWarnings("rawtypes")
+		Map.Entry k= (Map.Entry) iterator.next();
+		bufferwriter.write(k.getKey() + "  " + k.getValue());
+		bufferwriter.write("\n");
+			}
+	
+			filesCreated.add(tempFile);
+		
+			hashlist.clear();
+		
+			bufferwriter.close();
+		}
+	
+   
+}
+
+
+	      
+	         
+	      
+	  
+
+	public static void main(String[] args) 
+	{
+		Scanner scan = new Scanner(System.in);
+		System.out.println("Number of Threads " );
+		String x=scan.nextLine();
+		String input = "input";
+		String output = "output.txt";
+		
+		int threads = Integer.parseInt(x);
+		
+		try
+		{
+						
+			if (threads<0)
+			{
+				System.out.println("Invalid thread count");
+				System.exit(0);
+				
+			}
+			
+			long startingTime = System.currentTimeMillis();
+			
+			File fp=new File(input);
+			File fp1=new File(output);
+
+			Dividefiles(fp, threads);
+			
+			HashMap<String, String> filesCreated;
+			BufferedReader[] bufreader = new BufferedReader[filesCreated.size()] ;   
+	         PrintWriter wr = new PrintWriter(output) ; 
+	        Map<String, Integer> map = new Map<String, Integer>(); 
+	         		for (int i = 0; i < filesCreated.size(); i++) {
+	        	 	bufreader[i] = new BufferedReader(new FileReader(filesCreated.get(i)));
+	        	 	String lineread = bufreader[i].readLine();
+	        	 		map.put(lineread, Integer.valueOf(i)); 
+	         			while (!map.isEmpty())
+	         			{
+	        	 		
+	        	 		int fileid = outelement.getValue().intValue();
+	        	 		wr.println(outelement.getKey());
+	        	 		                                
+	        	 		String line = bufreader[fileid].readLine();
+	        	 		                                   
+	        	 		if (line != null)
+	        	 		map.put(line, Integer.valueOf(fileid));
+	        	 	
+			
+
+			long endingTime = System.currentTimeMillis();
+			
+			long totaltime = endingTime - startingTime;
+
+
+		  System.out.println("Time Taken- " +totaltime + " Ms ");
+		  
+		  
+		 
+	         			}}
+		catch (Exception e)
+
+		{
+			e.printStackTrace();
+			System.out.println(e.getMessage());
+		}
+
+	}
+
+	private static void Dividefiles(File fp, int threads2) throws InterruptedException, IOException {
+		
+		
+
+		BufferedReader filereader = new BufferedReader(new FileReader(fp));
+		Thread[] threads = null;
+		threads = new Thread[threads2];
+	
+				
+		long chuncks = fp.length() / 10;
+	
+		
+		
+			HashMap<String, String> hashlist = new HashMap<String, String>();
+			
+			String newline = "";
+			
+				try {
+					while ((newline = filereader.readLine()) != null)
+					{
+					
+						String key = newline.substring(0, 10);
+						String value = newline.substring(13, 98);
+					    hashlist.put(key, value);
+						
+					}
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				
+		   int i;		
+           for(i=1;i<=threads2;i++)
+           {
+			
+			Sharedmemory s = new Sharedmemory(hashlist);
+			         
+					threads[i] = new Thread(s);
+					threads[i].start();
+					threads[i].join();
+           
+
+			}
+
+			hashlist.clear();
+			
+     		filereader.close();
+	 }
+   }
+		

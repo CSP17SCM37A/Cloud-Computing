@@ -1,0 +1,5 @@
+#pscp -h host.txt -x "-oStrictHostKeyChecking=no -i nvirginia.pem" -r /media/jay2106/7333d591-a49b-490d-84f7-a52d73aff7d1/downloads/hadoop/etc/hadoop/core-site.xml /home/ubuntu/hadoop/etc/hadoop/core-site.xml
+#pscp -h host.txt -x "-oStrictHostKeyChecking=no -i nvirginia.pem" -r /media/jay2106/7333d591-a49b-490d-84f7-a52d73aff7d1/downloads/hadoop/etc/hadoop/hdfs-site.xml /home/ubuntu/hadoop/etc/hadoop/hdfs-site.xml
+#pscp -h host.txt -x "-oStrictHostKeyChecking=no -i nvirginia.pem" -r /media/jay2106/7333d591-a49b-490d-84f7-a52d73aff7d1/downloads/hadoop/etc/hadoop/yarn-site.xml /home/ubuntu/hadoop/etc/hadoop/yarn-site.xml
+pscp -h host.txt -x "-oStrictHostKeyChecking=no -i nvirginia.pem" -r /media/jay2106/7333d591-a49b-490d-84f7-a52d73aff7d1/downloads/hadoop/etc/hadoop/mapred-site.xml /home/ubuntu/hadoop/etc/hadoop/mapred-site.xml
+#pscp -h host.txt -x "-oStrictHostKeyChecking=no -i nvirginia.pem" -r /media/jay2106/7333d591-a49b-490d-84f7-a52d73aff7d1/downloads/hadoop/etc/hadoop/slaves /home/ubuntu/hadoop/etc/hadoop/slaves
